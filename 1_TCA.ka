@@ -1,0 +1,72 @@
+###
+# This kappa file models the electron transfer from the TCA cycle to an ubiquinol(QH2) given that the input in the TCA cycle is Glucose.
+###
+
+# Tokens #
+%token: Glucose
+%token: NADH
+%token: succinate
+%token: Quinol
+
+# Agents #
+%agent: TCA(glucose~0~1)
+%agent: ComplexI(FMN~0~H)
+%agent: ComplexII(FAD~0~H)
+
+# Variables #
+%var: 'glucose num'	10.0 #mM
+%var: 'Acyl-CoA'	0.14 #mM; default value
+%var: 'TCAs'		('Acyl-CoA'/2)*1000 #M
+%var: 'old TCA count'	(0.14/2)*1000 #default value
+
+%var: 'Glucose in TCA'	0.1
+%var: 'TCA in'		1 #amount of 'Glucose in TCA' Glucose consumed per second
+%var: 'TCA out'		1 #amount of (6*'Glucose in TCA') NADH and (2*'Glucose in TCA') succinate produced per second
+
+%var: 'Complex I in'	1E-3
+%var: 'Complex I out'	1E-5
+
+%var: 'Complex II in'	1E-3
+%var: 'Complex II out'	1E-5
+
+# Initial Population #
+%init: Glucose <- 'glucose num'
+%init: 'TCAs' TCA()
+
+# Perturbation #
+%mod: repeat |Glucose|<0 do Glucose<-0; $DEL [inf] TCA(glucose~0) until [false]
+
+%mod: repeat [true] do $UPDATE 'glucose num' |Glucose| until [false]
+%mod: repeat |Glucose|>0.5 do $UPDATE 'Acyl-CoA' (0.052*|Glucose| + 0.114) until [false]
+%mod: repeat |Glucose|>5.5 do $UPDATE 'Acyl-CoA' 0.4 until [false]
+
+%mod: repeat 'TCAs'>'old TCA count' do $ADD ('TCAs'-'old TCA count') TCA(glucose~0); $UPDATE 'old TCA count' 'TCAs' until [false]
+%mod: repeat 'TCAs'<'old TCA count' do $DEL ('old TCA count'-'TCAs') TCA(glucose~0);  $UPDATE 'old TCA count' 'TCAs' until [false]
+
+# Rules #
+'TCA consumes Glucose'\
+TCA(glucose~0) |'Glucose in TCA':Glucose -> TCA(glucose~1) @ 'TCA in'
+
+'TCA produces NADH and succinate'\
+TCA(glucose~1) ->TCA(glucose~0) |(6*'Glucose in TCA'):NADH + (2*'Glucose in TCA'):succinate @ 'TCA out'
+
+#'Complex I consumes NADH'\
+#ComplexI(FMN~0) |1:NADH ->ComplexI(FMN~H) @ 'Complex I in' #In fact, NADH binds to Complex I, but we model NADH as a token in order to simplify the model.
+
+#'Complex I produces QH2'\
+#ComplexI(FMN~H) ->ComplexI(FMN~0) |1:Quinol @ 'Complex I out' #Complex I reduces the Quinol
+
+#'Complex II consumes succinate'\
+#ComplexII(FAD~0) |1:succinate ->ComplexII(FAD~H) @'Complex II in'
+
+#'Complex II produces QH2'\
+#ComplexII(FAD~H) ->ComplexII(FAD~0) |1:Quinol @'Complex II out' # Complec II reduces the Quinol
+
+### Observe ###
+%obs: 'Events' [E+]
+%obs: 'glucose' |Glucose|
+%obs: 'TCA0' TCA(glucose~0)
+%obs: 'TCA1' TCA(glucose~1)
+%obs: 'NADH' |NADH|
+%obs: 'succinate' |succinate|
+
