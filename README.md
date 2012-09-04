@@ -9,13 +9,17 @@ We model the electron transfer system in E.coli by using the stochastic, agent-b
 
 1_TCA.ka
 // Glucose -> TCA cycle -> Quinol 
+
 2_NapC.ka
 // Quinol -> NapC
+
 3_MtrA.ka
 // Electron transfer between NapC, NapAB, NrfA and MtrA	3_MtrA.ka
+
 4_MtrABC.ka
 // 4A. MtrA -> Fe soluble &
 // 4B. MtrA -> MtrB -> MtrC
+
 5_UFe.ka
 // MtrC -> Unsoluble Iron (including the Flavins)
 
