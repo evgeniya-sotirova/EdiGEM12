@@ -7,15 +7,18 @@ EdiGEM12 is the team from Edinburgh University taking part in the synthetic biol
 
 We model the electron transfer system in E.coli by using the stochastic, agent-based language Kappa and its implementation KaSim 3.0 (*). The whole process is divided into sub-processes which we try to model separately at first and combine at the end. The sub-processes can roughly be described in the following way:
 
-<pre>
-Sub-process:								Corresponding Kappa File: 
-1. Glucose -> TCA cycle -> Quinol					1_TCA.ka 
-2. Quinol -> NapC								2_NapC.ka 
-3. Electron transfer between NapC, NapAB, NrfA and MtrA	3_MtrA.ka 
-4. MtrA -> MtrB -> MtrC							4_MtrABC.ka 
-5. MtrC -> Unsoluble Iron (including the Flavins)		5_UFe.ka
-</pre>
+1_TCA.ka
+// Glucose -> TCA cycle -> Quinol 
+2_NapC.ka
+// Quinol -> NapC
+3_MtrA.ka
+// Electron transfer between NapC, NapAB, NrfA and MtrA	3_MtrA.ka
+4_MtrABC.ka
+// 4A. MtrA -> Fe soluble &
+// 4B. MtrA -> MtrB -> MtrC
+5_UFe.ka
+// MtrC -> Unsoluble Iron (including the Flavins)
 
-<br/><br/><br/><br/>
+
 - - -
 (*) More about Kappa and rule-based modelling can be found at http://kappalanguage.org/.
