@@ -23,18 +23,20 @@
 %var: 'TCA in'		1 #amount of 'Glucose in TCA' Glucose consumed per second
 %var: 'TCA out'		1 #amount of (6*'Glucose in TCA') NADH and (2*'Glucose in TCA') succinate produced per second
 
+%var: 'NADH in CI'	1E-3
 %var: 'Complex I in'	1E-3
 %var: 'Complex I out'	1E-5
 
-%var: 'Complex II in'	1E-3
-%var: 'Complex II out'	1E-5
+%var: 'Succinate in CII'	1E-3
+%var: 'Complex II in'		1E-3
+%var: 'Complex II out'		1E-5
 
 # Initial Population #
 %init: Glucose <- 'glucose num'
 %init: 'TCAs' TCA()
 
 # Perturbation #
-%mod: repeat |Glucose|<0 do Glucose<-0; $DEL [inf] TCA(glucose~0) until [false]
+%mod: |Glucose|<0 do Glucose<-0; 'TCA consumes Glucose' := 0
 
 %mod: repeat [true] do $UPDATE 'glucose num' |Glucose| until [false]
 %mod: repeat |Glucose|>0.5 do $UPDATE 'Acyl-CoA' (0.052*|Glucose| + 0.114) until [false]
@@ -51,22 +53,23 @@ TCA(glucose~0) |'Glucose in TCA':Glucose -> TCA(glucose~1) @ 'TCA in'
 TCA(glucose~1) ->TCA(glucose~0) |(6*'Glucose in TCA'):NADH + (2*'Glucose in TCA'):succinate @ 'TCA out'
 
 #'Complex I consumes NADH'\
-#ComplexI(FMN~0) |1:NADH ->ComplexI(FMN~H) @ 'Complex I in' #In fact, NADH binds to Complex I, but we model NADH as a token in order to simplify the model.
+#ComplexI(FMN~0) |'NADH in CI':NADH ->ComplexI(FMN~H) @ 'Complex I in'
 
 #'Complex I produces QH2'\
-#ComplexI(FMN~H) ->ComplexI(FMN~0) |1:Quinol @ 'Complex I out' #Complex I reduces the Quinol
+#ComplexI(FMN~H) ->ComplexI(FMN~0) |'NADH in CI':Quinol @ 'Complex I out' #Complex I reduces the Quinol
 
 #'Complex II consumes succinate'\
-#ComplexII(FAD~0) |1:succinate ->ComplexII(FAD~H) @'Complex II in'
+#ComplexII(FAD~0) |'Succinate in CII':succinate ->ComplexII(FAD~H) @'Complex II in'
 
 #'Complex II produces QH2'\
-#ComplexII(FAD~H) ->ComplexII(FAD~0) |1:Quinol @'Complex II out' # Complec II reduces the Quinol
+#ComplexII(FAD~H) ->ComplexII(FAD~0) |'Succinate in CII':Quinol @'Complex II out' # Complec II reduces the Quinol
 
 ### Observe ###
-%obs: 'Events' [E+]
-%obs: 'glucose' |Glucose|
-%obs: 'TCA0' TCA(glucose~0)
-%obs: 'TCA1' TCA(glucose~1)
-%obs: 'NADH' |NADH|
-%obs: 'succinate' |succinate|
+%obs: 'Events'		[E+]
+%obs: 'glucose'		|Glucose|
+%obs: 'TCA'		TCA()
+%obs: 'TCA0'		TCA(glucose~0)
+%obs: 'TCA1'		TCA(glucose~1)
+%obs: 'NADH'		|NADH|
+%obs: 'succinate'	|succinate|
 
