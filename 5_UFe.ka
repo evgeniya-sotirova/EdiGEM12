@@ -2,7 +2,7 @@
 %agent: Flavin(conn, carry~0~2) # we assume Flavin either has 0 or 2 electrons at any time
 %agent: Iron(conn, carry~0~2~10)  # this is a physical unit of iron containing any number of molecules. init size depends on size of unit as in Jensen study.
 
-%var: 'Flavin_count' 3009554 # 150477 338574 526672 902866
+%var: 'Flavin_count' 150477 # 150477 338574 526672 902866
 %var: 'Iron_count' 9104 # 6474797558491
 
 %var: 'Flavin_mtrC_on' 1
@@ -34,3 +34,4 @@
 %obs: 'electrons from mtrC' 'free Iron 10' * 10
 %obs: 'Connected Iron' Iron(conn!_)
 %obs: 'Connected Flavin' Flavin(conn!_)
+

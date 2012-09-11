@@ -1,23 +1,31 @@
 %agent: mtrB(dom)
+%agent: NapC(dom)
 %agent: mtrA(conn, carry~none~some) # approximate model for now, should ideally keep track of 10 electrons
 %agent: Iron(conn, carry~0~1)   # a molecule of soluble iron
 %agent: mtrBCounter()
 
-%var: 'Iron_count' 9104 # 6474797558491
+%var: 'Iron_count' 100000 # should be 7.2 mil
 
-%var: 'mtrA_mtrB_on' 1
+%var: 'mtrA_mtrB_on' 1000
 %var: 'mtrA_mtrB_off' 1000000
-%var: 'mtrA_Iron_on' 1
+%var: 'mtrA_Iron_on' 0.1
 %var: 'mtrA_Iron_off' 100000
+%var: 'NapC_mtrA_on' 10
+%var: 'NapC_mtrA_off' 50000
+
+'mtrA connects to NapC' mtrA(conn, carry~none), NapC(dom) -> mtrA(conn!1,carry~none), NapC(dom!1) @ 'NapC_mtrA_on'
+'mtrA disconnects from NapC' mtrA(conn!1,carry~none), NapC(dom!1) -> mtrA(conn, carry~some), NapC(dom) @ 'NapC_mtrA_off'
 
 'mtrA connects to mtrB' mtrA(conn, carry~some), mtrB(dom) -> mtrA(conn!1,carry~some), mtrB(dom!1) @ 'mtrA_mtrB_on'
 'mtrA disconnects from mtrB' mtrA(conn!1,carry~some), mtrB(dom!1) -> mtrA(conn, carry~none), mtrB(dom), mtrBCounter() @ 'mtrA_mtrB_off'
+
 'mtrA connects to Iron' mtrA(conn, carry~some), Iron(conn, carry~0) -> mtrA(conn!1,carry~some), Iron(conn!1, carry~0) @ 'mtrA_Iron_on'
 'mtrA disconnects from Iron, some electrons left' mtrA(conn!1,carry~some), Iron(conn!1, carry~0) -> mtrA(conn, carry~some), Iron(conn, carry~1), Iron(conn, carry~0) @ 'mtrA_Iron_off'
-'mtrA disconnects from Iron, no electrons left' mtrA(conn!1,carry~some), Iron(conn!1, carry~0) -> mtrA(conn, carry~none), Iron(conn, carry~1), Iron(conn, carry~0) @ 'mtrA_Iron_off' / 10
+'mtrA disconnects from Iron, no electrons left' mtrA(conn!1,carry~some), Iron(conn!1, carry~0) -> mtrA(conn, carry~none), Iron(conn, carry~1), Iron(conn, carry~0) @ 'mtrA_Iron_off' /10
 
 %init: 75 mtrB(dom)
-%init: 2100 mtrA(conn, carry~some)
+%init: 100 NapC(dom)
+%init: 2100 mtrA(conn, carry~none)
 %init: 'Iron_count' Iron(conn, carry~0)
 
 %obs: 'free Iron' Iron(conn, carry~0)
@@ -25,3 +33,4 @@
 %obs: 'electrons from mtrB' mtrBCounter()
 %obs: 'Connected Iron' Iron(conn!_, carry~0)
 %obs: 'MtrA with electrons' mtrA(conn, carry~some)
+
