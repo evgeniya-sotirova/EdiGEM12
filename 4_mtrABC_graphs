@@ -1,0 +1,5 @@
+4_mtrABC_1 shows the behaviour in Ecoli with a mtrCAB complex. The difference between soluble and insoluble electron acceptors is 3x
+
+4_mtrABC_2 shows a more typical environment for Shewanella, where NapC -> mtrA transfer is less of a bottleneck. The difference between acceptors is now larger.
+
+4_mtrABC_3 shows the behaviour in Ecoli with a mtrA complex. The difference between this soluble rate and 4_mtrCAB_1 is ~1.5
