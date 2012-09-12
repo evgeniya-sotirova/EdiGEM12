@@ -16,15 +16,15 @@
 'mtrA connects to NapC' mtrA(conn, carry~none), NapC(dom) -> mtrA(conn!1,carry~none), NapC(dom!1) @ 'NapC_mtrA_on'
 'mtrA disconnects from NapC' mtrA(conn!1,carry~none), NapC(dom!1) -> mtrA(conn, carry~some), NapC(dom) @ 'NapC_mtrA_off'
 
-#'mtrA connects to mtrB' mtrA(conn, carry~some), mtrB(dom) -> mtrA(conn!1,carry~some), mtrB(dom!1) @ 'mtrA_mtrB_on'
-#'mtrA disconnects from mtrB' mtrA(conn!1,carry~some), mtrB(dom!1) -> mtrA(conn, carry~none), mtrB(dom), mtrBCounter() @ 'mtrA_mtrB_off'
+'mtrA connects to mtrB' mtrA(conn, carry~some), mtrB(dom) -> mtrA(conn!1,carry~some), mtrB(dom!1) @ 'mtrA_mtrB_on'
+'mtrA disconnects from mtrB' mtrA(conn!1,carry~some), mtrB(dom!1) -> mtrA(conn, carry~none), mtrB(dom), mtrBCounter() @ 'mtrA_mtrB_off'
 
 'mtrA from Iron, some electrons left' mtrA(conn, carry~some), IronPlaceholder()  -> mtrA(conn, carry~some), IronPlaceholder(), IronCounter()  @ 'mtrA_Iron'
 'mtrA from Iron, no electrons left' mtrA(conn, carry~some), IronPlaceholder() -> mtrA(conn, carry~none), IronPlaceholder(), IronCounter() @ 'mtrA_Iron'/10
 
 %init: 75 mtrB(dom)
 %init: 100 NapC(dom)
-%init: 4000 mtrA(conn, carry~none)
+%init: 2100 mtrA(conn, carry~none)
 %init: 1 IronPlaceholder()
 
 %init: Iron <- 1.2 # 1.2E-14 mM
