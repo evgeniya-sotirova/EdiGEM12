@@ -15,8 +15,8 @@
 
 # Variables #
 %var: 'glucose num'	10.0 #mM
-%var: 'Acyl-CoA'	0.14 #mM; default value
-%var: 'TCAs'		('Acyl-CoA'/2)*1000 #M
+%var: 'Acyl-CoA'		0.14 #mM; default value
+%var: 'TCAs'		('Acyl-CoA'/2)*1000 #muM
 %var: 'old TCA count'	(0.14/2)*1000 #default value
 
 %var: 'Glucose in TCA'	0.1
@@ -63,13 +63,3 @@ TCA(glucose~1) ->TCA(glucose~0) |(6*'Glucose in TCA'):NADH + (2*'Glucose in TCA'
 
 #'Complex II produces QH2'\
 #ComplexII(FAD~H) ->ComplexII(FAD~0) |'Succinate in CII':Quinol @'Complex II out' # Complec II reduces the Quinol
-
-### Observe ###
-%obs: 'Events'		[E+]
-%obs: 'glucose'		|Glucose|
-%obs: 'TCA'		TCA()
-%obs: 'TCA0'		TCA(glucose~0)
-%obs: 'TCA1'		TCA(glucose~1)
-%obs: 'NADH'		|NADH|
-%obs: 'succinate'	|succinate|
-

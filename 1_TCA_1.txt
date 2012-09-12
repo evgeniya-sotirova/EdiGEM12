@@ -1,0 +1,15 @@
+1_TCA_1.png shows the relation betwen the amount of glucose and the number of "running" TCA cycles at a given time.
+
+The relation should be roughly linear with 0.07mM and 0.2 mM bottom and top limit for the TCA cycles, respectively. This numbers were taken from paper 1 in the bibliography.
+
+Active rules:
+'TCA consumes Glucose'\
+'TCA produces NADH and succinate'\
+
+KaSim3 -i 1_TCA.ka -e 100 -p 100 1_TCA_1.out
+
+### Observe ###
+%var: 'glucose'	|Glucose|
+%var: 'TCA'		TCA()
+%var: 'glucose/TCA'	'glucose'/'TCA'
+%plot: 'glucose/TCA'
