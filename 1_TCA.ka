@@ -21,22 +21,24 @@
 
 %var: 'Glucose in TCA'	0.1
 %var: 'TCA in'		1 #amount of 'Glucose in TCA' Glucose consumed per second
-%var: 'TCA out'		1 #amount of (6*'Glucose in TCA') NADH and (2*'Glucose in TCA') succinate produced per second
+%var: 'TCA out'		1E-1 #amount of (6*'Glucose in TCA') NADH and (2*'Glucose in TCA') succinate produced per second
 
 %var: 'NADH in CI'	1E-3
-%var: 'Complex I in'	1E-3
-%var: 'Complex I out'	1E-5
+%var: 'Complex I in'	0 # should be 1E-3 when there is NADH
+%var: 'Complex I out'	(0.045/0.32)*(1E-3) #Should be (0.045/0.32)*'Complex I in'
 
 %var: 'Succinate in CII'	1E-3
-%var: 'Complex II in'		1E-3
-%var: 'Complex II out'		1E-5
+%var: 'Complex II in'		0 #Should be (0.670/0.320)*(1E-3) when there is succinate
+%var: 'Complex II out'		(0.031/0.320)*(1E-3) #Should be (0.031/0.320)*'Complex I in'
 
 # Initial Population #
 %init: Glucose <- 'glucose num'
 %init: 'TCAs' TCA()
+%init: 10000 ComplexI(FMN~0) #muM
+%init: 10000 ComplexII(FAD~0) #muM
 
 # Perturbation #
-%mod: |Glucose|<0 do Glucose<-0; 'TCA consumes Glucose' := 0
+%mod: |Glucose|<0 do Glucose<-0; $UPDATE 'TCA consumes Glucose' 0
 
 %mod: repeat [true] do $UPDATE 'glucose num' |Glucose| until [false]
 %mod: repeat |Glucose|>0.5 do $UPDATE 'Acyl-CoA' (0.052*|Glucose| + 0.114) until [false]
@@ -45,6 +47,12 @@
 %mod: repeat 'TCAs'>'old TCA count' do $ADD ('TCAs'-'old TCA count') TCA(glucose~0); $UPDATE 'old TCA count' 'TCAs' until [false]
 %mod: repeat 'TCAs'<'old TCA count' do $DEL ('old TCA count'-'TCAs') TCA(glucose~0);  $UPDATE 'old TCA count' 'TCAs' until [false]
 
+%mod: |NADH|>0 do $UPDATE 'Complex I in' 1E-3
+%mod: |NADH|<0 do NADH<-0; $UPDATE 'Complex I in' 0
+
+%mod: |succinate|>0 do $UPDATE 'Complex II in' (0.670/0.320)*(1E-3) #Should be (0.670/0.320)*'Complex I in'
+%mod: |succinate|<0 do succinate<-0; $UPDATE 'Complex II in' 0
+
 # Rules #
 'TCA consumes Glucose'\
 TCA(glucose~0) |'Glucose in TCA':Glucose -> TCA(glucose~1) @ 'TCA in'
@@ -52,14 +60,29 @@ TCA(glucose~0) |'Glucose in TCA':Glucose -> TCA(glucose~1) @ 'TCA in'
 'TCA produces NADH and succinate'\
 TCA(glucose~1) ->TCA(glucose~0) |(6*'Glucose in TCA'):NADH + (2*'Glucose in TCA'):succinate @ 'TCA out'
 
-#'Complex I consumes NADH'\
-#ComplexI(FMN~0) |'NADH in CI':NADH ->ComplexI(FMN~H) @ 'Complex I in'
+'Complex I consumes NADH'\
+ComplexI(FMN~0) |'NADH in CI':NADH ->ComplexI(FMN~H) @ 'Complex I in'
 
-#'Complex I produces QH2'\
-#ComplexI(FMN~H) ->ComplexI(FMN~0) |'NADH in CI':Quinol @ 'Complex I out' #Complex I reduces the Quinol
+'Complex I produces QH2'\
+ComplexI(FMN~H) ->ComplexI(FMN~0) |'NADH in CI':Quinol @ 'Complex I out' #Complex I reduces the Quinol
 
-#'Complex II consumes succinate'\
-#ComplexII(FAD~0) |'Succinate in CII':succinate ->ComplexII(FAD~H) @'Complex II in'
+'Complex II consumes succinate'\
+ComplexII(FAD~0) |'Succinate in CII':succinate ->ComplexII(FAD~H) @'Complex II in'
 
-#'Complex II produces QH2'\
-#ComplexII(FAD~H) ->ComplexII(FAD~0) |'Succinate in CII':Quinol @'Complex II out' # Complec II reduces the Quinol
+'Complex II produces QH2'\
+ComplexII(FAD~H) ->ComplexII(FAD~0) |'Succinate in CII':Quinol @'Complex II out' # Complec II reduces the Quinol
+
+# Observe #
+%obs: 'glucose'		|Glucose|*1000 #We need the multiplication by 1E3 because we do not use the same units for glucose as we do for ComplexI.
+
+#Complex I
+%obs: 'NADH'		|NADH|*1000
+%obs: 'Complex I without NADH'	ComplexI(FMN~0)
+%obs: 'Complex I with NADH'	ComplexI(FMN~H)
+
+#Complex II
+%obs: 'succinate'	|succinate|*1000
+%obs: 'Complex II without succinate'	ComplexII(FAD~0)
+%obs: 'Complex II with succinate'	ComplexII(FAD~H)
+
+%obs: 'quinols'		|Quinol|*1000

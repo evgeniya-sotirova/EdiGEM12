@@ -6,7 +6,7 @@ Active rules:
 'TCA consumes Glucose'\
 'TCA produces NADH and succinate'\
 
-KaSim3 -i 1_TCA.ka -e 200 -p 200 1_TCA_2.out
+KaSim3 -i 1_TCA.ka -e 300 -p 300 -o 1_TCA_2.out
 
 ### Observe ###
 %obs: 'glucose'		|Glucose|
