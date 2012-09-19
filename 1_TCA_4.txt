@@ -1,0 +1,21 @@
+1_TCA_4.png shows the amount of glucose, NADH, ComplexI agents and quinols.
+
+The rule that we ativate this time is:
+'Complex I produces QH2' ComplexI(FMN~H) ->ComplexI(FMN~0) |'NADH in CI':Quinol @ 'Complex I out' #Complex I reduces the Quinol 
+
+A molecule of NADH in Complex I results in one quinol. This is why the amount of Quinols we get from Complex I is set to 'NADH in CI'.
+
+Active rules:
+'TCA consumes Glucose'
+'TCA produces NADH and succinate'
+'Complex I consumes NADH'
+'Complex I produces QH2'
+
+KaSim3 -i 1_TCA.ka -t 200000 -p 100000 -o 1_TCA_4.out
+
+### Observe ###
+%obs: 'glucose'		|Glucose|*1000 #We need the multiplication by 1E3 because we do not use the same units for glucose as we do for ComplexI.
+%obs: 'NADH'		|NADH|*1000
+%obs: 'Complex I without NADH'	ComplexI(FMN~0)
+%obs: 'Complex I with NADH'	ComplexI(FMN~H)
+%obs: 'quinols'		|Quinol|*1000
