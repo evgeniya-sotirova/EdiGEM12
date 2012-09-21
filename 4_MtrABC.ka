@@ -1,35 +1,51 @@
 %agent: mtrB(dom)
 %agent: NapC(dom)
-%agent: mtrA(conn, carry~none~some) # approximate model for now, should ideally keep track of 10 electrons
+%agent: mtrA(conn, carry~0~1~2~3~4~5~6~7~8~9~10)
 %agent: mtrBCounter()
 %agent: IronCounter()
 %agent: IronPlaceholder()
 
-%token: Iron
-
 %var: 'mtrA_mtrB_on' 100
-%var: 'mtrA_mtrB_off' 100000
-%var: 'mtrA_Iron' 20000 * |Iron|
-%var: 'NapC_mtrA_on' 10
-%var: 'NapC_mtrA_off' 10000
+%var: 'mtrA_mtrB_off' 1000000
+%var: 'mtrA_SolubleIron' 250000
+%var: 'NapC_mtrA_on' 100
+%var: 'NapC_mtrA_off' 100000
 
-'mtrA connects to NapC' mtrA(conn, carry~none), NapC(dom) -> mtrA(conn!1,carry~none), NapC(dom!1) @ 'NapC_mtrA_on'
-'mtrA disconnects from NapC' mtrA(conn!1,carry~none), NapC(dom!1) -> mtrA(conn, carry~some), NapC(dom) @ 'NapC_mtrA_off'
+%var: 'no_MtrA' 2100
+%var: 'no_NapC' 100
 
-'mtrA connects to mtrB' mtrA(conn, carry~some), mtrB(dom) -> mtrA(conn!1,carry~some), mtrB(dom!1) @ 'mtrA_mtrB_on'
-'mtrA disconnects from mtrB' mtrA(conn!1,carry~some), mtrB(dom!1) -> mtrA(conn, carry~none), mtrB(dom), mtrBCounter() @ 'mtrA_mtrB_off'
+'mtrA connects to NapC' mtrA(conn), NapC(dom) -> mtrA(conn!1), NapC(dom!1) @ 'NapC_mtrA_on'
+'mtrA disconnects from NapC' mtrA(conn!1,carry), NapC(dom!1) -> mtrA(conn, carry~10), NapC(dom) @ 'NapC_mtrA_off'
 
-'mtrA from Iron, some electrons left' mtrA(conn, carry~some), IronPlaceholder()  -> mtrA(conn, carry~some), IronPlaceholder(), IronCounter()  @ 'mtrA_Iron'
-'mtrA from Iron, no electrons left' mtrA(conn, carry~some), IronPlaceholder() -> mtrA(conn, carry~none), IronPlaceholder(), IronCounter() @ 'mtrA_Iron'/10
+'mtrA connects to mtrB' mtrA(conn), mtrB(dom) -> mtrA(conn!1), mtrB(dom!1) @ 'mtrA_mtrB_on'
+'mtrA0 disconnects from mtrB' mtrA(conn!1,carry~0), mtrB(dom!1) -> mtrA(conn, carry~0), mtrB(dom) @ 'mtrA_mtrB_off'
+'mtrA1 disconnects from mtrB' mtrA(conn!1,carry~1), mtrB(dom!1) -> mtrA(conn, carry~0), mtrB(dom), mtrBCounter() @ 'mtrA_mtrB_off'
+'mtrA2 disconnects from mtrB' mtrA(conn!1,carry~2), mtrB(dom!1) -> mtrA(conn, carry~0), mtrB(dom), mtrBCounter(), mtrBCounter() @ 'mtrA_mtrB_off'/2
+'mtrA3 disconnects from mtrB' mtrA(conn!1,carry~3), mtrB(dom!1) -> mtrA(conn, carry~0), mtrB(dom), mtrBCounter(), mtrBCounter(), mtrBCounter() @ 'mtrA_mtrB_off'/3
+'mtrA4 disconnects from mtrB' mtrA(conn!1,carry~4), mtrB(dom!1) -> mtrA(conn, carry~0), mtrB(dom), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter() @ 'mtrA_mtrB_off'/4
+'mtrA5 disconnects from mtrB' mtrA(conn!1,carry~5), mtrB(dom!1) -> mtrA(conn, carry~0), mtrB(dom), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter() @ 'mtrA_mtrB_off'/5
+'mtrA6 disconnects from mtrB' mtrA(conn!1,carry~6), mtrB(dom!1) -> mtrA(conn, carry~0), mtrB(dom), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter() @ 'mtrA_mtrB_off'/6
+'mtrA7 disconnects from mtrB' mtrA(conn!1,carry~7), mtrB(dom!1) -> mtrA(conn, carry~0), mtrB(dom), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter() @ 'mtrA_mtrB_off'/7
+'mtrA8 disconnects from mtrB' mtrA(conn!1,carry~8), mtrB(dom!1) -> mtrA(conn, carry~0), mtrB(dom), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter() @ 'mtrA_mtrB_off'/8
+'mtrA9 disconnects from mtrB' mtrA(conn!1,carry~9), mtrB(dom!1) -> mtrA(conn, carry~0), mtrB(dom), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter() @ 'mtrA_mtrB_off'/9
+'mtrA10 disconnects from mtrB' mtrA(conn!1,carry~10), mtrB(dom!1) -> mtrA(conn, carry~0), mtrB(dom), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter(), mtrBCounter() @ 'mtrA_mtrB_off'/10
+
+'mtrA1 donates to SolubleIron' mtrA(conn, carry~1), IronPlaceholder()  -> mtrA(conn, carry~0), IronPlaceholder(), IronCounter()  @ 'mtrA_SolubleIron'
+'mtrA2 donates to SolubleIron' mtrA(conn, carry~2), IronPlaceholder()  -> mtrA(conn, carry~1), IronPlaceholder(), IronCounter()  @ 'mtrA_SolubleIron'
+'mtrA3 donates to SolubleIron' mtrA(conn, carry~3), IronPlaceholder()  -> mtrA(conn, carry~2), IronPlaceholder(), IronCounter()  @ 'mtrA_SolubleIron'
+'mtrA4 donates to SolubleIron' mtrA(conn, carry~4), IronPlaceholder()  -> mtrA(conn, carry~3), IronPlaceholder(), IronCounter()  @ 'mtrA_SolubleIron'
+'mtrA5 donates to SolubleIron' mtrA(conn, carry~5), IronPlaceholder()  -> mtrA(conn, carry~4), IronPlaceholder(), IronCounter()  @ 'mtrA_SolubleIron'
+'mtrA6 donates to SolubleIron' mtrA(conn, carry~6), IronPlaceholder()  -> mtrA(conn, carry~5), IronPlaceholder(), IronCounter()  @ 'mtrA_SolubleIron'
+'mtrA7 donates to SolubleIron' mtrA(conn, carry~7), IronPlaceholder()  -> mtrA(conn, carry~6), IronPlaceholder(), IronCounter()  @ 'mtrA_SolubleIron'
+'mtrA8 donates to SolubleIron' mtrA(conn, carry~8), IronPlaceholder()  -> mtrA(conn, carry~7), IronPlaceholder(), IronCounter()  @ 'mtrA_SolubleIron'
+'mtrA9 donates to SolubleIron' mtrA(conn, carry~9), IronPlaceholder()  -> mtrA(conn, carry~8), IronPlaceholder(), IronCounter()  @ 'mtrA_SolubleIron'
+'mtrA10 donates to SolubleIron' mtrA(conn, carry~10), IronPlaceholder()  -> mtrA(conn, carry~9), IronPlaceholder(), IronCounter()  @ 'mtrA_SolubleIron'
 
 %init: 75 mtrB(dom)
-%init: 100 NapC(dom)
-%init: 2100 mtrA(conn, carry~none)
+%init: 'no_NapC' NapC(dom)
+%init: 'no_MtrA' mtrA(conn, carry~0)
 %init: 1 IronPlaceholder()
 
-%init: Iron <- 1.2 # 1.2E-14 mM
-
-%obs: 'electrons from Iron' IronCounter()
-%obs: 'electrons from mtrB' mtrBCounter()
-%obs: 'MtrA with electrons' mtrA(conn, carry~some)
-
+%obs: 'mtrCAB_electrons from SolubleIron' IronCounter()
+%obs: 'mtrCAB_electrons from mtrB' mtrBCounter()
+#%obs: 'MtrA without electrons' mtrA(conn, carry~0)
