@@ -3,19 +3,19 @@
 ###
 
 # Tokens #
-%token: Quinol
+#%token: Quinol
 
 # Agents #
-%agent: NapC(carry~0~2~4)
+#%agent: NapC(carry~0~2~4)
 
 # Variables: #
-%var: 'Quinol in NapC'				1E-3
-%var: 'NapC with 0 e absorbs Quinol'		(0.12/0.32)*(1E-3)	#-56 mV, -181 mV: avg~120mV
-%var: 'NapC with 2 e absorbs Quinol'		(0.221/0.32)*(1E-3)	#-207 mV and -235 mV: avg~221mV
+%var: 'Quinol in NapC'				1E-10
+%var: 'NapC with 0 e absorbs Quinol'		(0.221/0.32)*(1E-5)	#-207 mV and -235 mV: avg~221mV
+%var: 'NapC with 2 e absorbs Quinol'		(0.12/0.32)*(1E-5)	#-56 mV, -181 mV: avg~120mV
 
 # Initial Population #
-%init: Quinol <- 0.05	#muM
-%init: 100 NapC(carry~0)
+#%init: Quinol <- 0.05	#muM
+%init: 50 NapC(carry~0)
 
 # Rules #
 'NapC(carry~0) absorbs Quinol'\
@@ -31,6 +31,9 @@ NapC(carry~2)|'Quinol in NapC':Quinol -> NapC(carry~4) @'NapC with 2 e absorbs Q
 %obs: 'NapC with 4 e'	NapC(carry~4)
 
 # Perturbation #
-#%mod: |Quinol|>0 do $UPDATE 'NapC(carry~0) absorbs Quinol' (0.12/0.32)*(1E-3)	#-56 mV, -181 mV: avg~120mV
-%mod: |Quinol|<0 do Quinol<-0; $UPDATE 'NapC(carry~0) absorbs Quinol' 0
+%mod: repeat |Quinol|>0 do $UPDATE 'NapC with 0 e absorbs Quinol' (0.221/0.32)*(1E-3) until [false]	#-56 mV, -181 mV: avg~120mV
+%mod: repeat |Quinol|<0 do Quinol<-0; $UPDATE 'NapC with 0 e absorbs Quinol' 0 until [false]
+
+%mod: repeat |Quinol|>0 do $UPDATE 'NapC with 2 e absorbs Quinol' (0.12/0.32)*(1E-3) until [false]
+%mod: repeat |Quinol|<0 do Quinol<-0; $UPDATE 'NapC with 2 e absorbs Quinol' 0 until [false]
 

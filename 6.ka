@@ -1,4 +1,4 @@
-%agent: NapC(dom)
+%agent: NapC(dom, carry~0~2~4)
 %agent: mtrA(conn, carry~0~1~2~3~4~5~6~7~8~9~10)
 %agent: mtrBCounter()
 %agent: SolubleIronCounter()
@@ -10,27 +10,64 @@
 %agent: Flavin(conn, carry~0~1~2) # we assume Flavin either has 0 or 2 electrons at any time
 %agent: InsolubleIron(dom1, dom2, carry~0~2~10)  # this is a physical unit of InsolubleIron containing any number of molecules. init size depends on size of unit as in Jensen study.
 
-%var: 'mtrA_mtrB_on' 10
-%var: 'mtrA_mtrB_off' 100000
-%var: 'mtrA_SolubleIron' 25000
-%var: 'NapC_mtrA_on' 10
-%var: 'NapC_mtrA_off' 10000
+%var: 'mult' 1.0E-8
+
+%var: 'mtrA_mtrB_on' 10 * 'mult'
+%var: 'mtrA_mtrB_off' 100000 * 'mult'
+%var: 'mtrA_SolubleIron' 25000 * 'mult'
+%var: 'NapC_mtrA_on' 10 * 'mult'
+%var: 'NapC_mtrA_off' 10000 * 'mult'
 
 %var: 'no_MtrA' 2100
-%var: 'no_NapC' 1000
+%var: 'no_NapC' 100
 
 %var: 'Flavin_count' 361319 # 361319 812969 1264620 2167920
 %var: 'InsolubleIron_count' 582 # 582 3316688360
 
-%var: 'Flavin_mtrC_on' 0.02
-%var: 'Flavin_mtrC_off' 50000
-%var: 'Flavin_InsolubleIron_on' 2
-%var: 'Flavin_InsolubleIron_off' 200000
-%var: 'InsolubleIron_mtrC_on' 2
-%var: 'InsolubleIron_mtrC_off' 1200
+%var: 'Flavin_mtrC_on' 0.02 * 'mult'
+%var: 'Flavin_mtrC_off' 50000 * 'mult'
+%var: 'Flavin_InsolubleIron_on' 2 * 'mult'
+%var: 'Flavin_InsolubleIron_off' 200000 * 'mult'
+%var: 'InsolubleIron_mtrC_on' 2 * 'mult'
+%var: 'InsolubleIron_mtrC_off' 1200 * 'mult'
 
 'mtrA connects to NapC' mtrA(conn), NapC(dom) -> mtrA(conn!1), NapC(dom!1) @ 'NapC_mtrA_on'
-'mtrA disconnects from NapC' mtrA(conn!1,carry), NapC(dom!1) -> mtrA(conn, carry~10), NapC(dom) @ 'NapC_mtrA_off'
+
+'mtrA0 disconnects from NapC0' mtrA(conn!1,carry~0), NapC(dom!1, carry~0) -> mtrA(conn, carry~0), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA1 disconnects from NapC0' mtrA(conn!1,carry~1), NapC(dom!1, carry~0) -> mtrA(conn, carry~1), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA2 disconnects from NapC0' mtrA(conn!1,carry~2), NapC(dom!1, carry~0) -> mtrA(conn, carry~2), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA3 disconnects from NapC0' mtrA(conn!1,carry~3), NapC(dom!1, carry~0) -> mtrA(conn, carry~3), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA4 disconnects from NapC0' mtrA(conn!1,carry~4), NapC(dom!1, carry~0) -> mtrA(conn, carry~4), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA5 disconnects from NapC0' mtrA(conn!1,carry~5), NapC(dom!1, carry~0) -> mtrA(conn, carry~5), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA6 disconnects from NapC0' mtrA(conn!1,carry~6), NapC(dom!1, carry~0) -> mtrA(conn, carry~6), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA7 disconnects from NapC0' mtrA(conn!1,carry~7), NapC(dom!1, carry~0) -> mtrA(conn, carry~7), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA8 disconnects from NapC0' mtrA(conn!1,carry~8), NapC(dom!1, carry~0) -> mtrA(conn, carry~8), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA9 disconnects from NapC0' mtrA(conn!1,carry~9), NapC(dom!1, carry~0) -> mtrA(conn, carry~9), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA10 disconnects from NapC0' mtrA(conn!1,carry~10), NapC(dom!1, carry~0) -> mtrA(conn, carry~10), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+
+'mtrA0 disconnects from NapC2' mtrA(conn!1,carry~0), NapC(dom!1, carry~2) -> mtrA(conn, carry~2), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA1 disconnects from NapC2' mtrA(conn!1,carry~1), NapC(dom!1, carry~2) -> mtrA(conn, carry~3), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA2 disconnects from NapC2' mtrA(conn!1,carry~2), NapC(dom!1, carry~2) -> mtrA(conn, carry~4), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA3 disconnects from NapC2' mtrA(conn!1,carry~3), NapC(dom!1, carry~2) -> mtrA(conn, carry~5), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA4 disconnects from NapC2' mtrA(conn!1,carry~4), NapC(dom!1, carry~2) -> mtrA(conn, carry~6), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA5 disconnects from NapC2' mtrA(conn!1,carry~5), NapC(dom!1, carry~2) -> mtrA(conn, carry~7), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA6 disconnects from NapC2' mtrA(conn!1,carry~6), NapC(dom!1, carry~2) -> mtrA(conn, carry~8), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA7 disconnects from NapC2' mtrA(conn!1,carry~7), NapC(dom!1, carry~2) -> mtrA(conn, carry~9), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA8 disconnects from NapC2' mtrA(conn!1,carry~8), NapC(dom!1, carry~2) -> mtrA(conn, carry~10), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA9 disconnects from NapC2' mtrA(conn!1,carry~9), NapC(dom!1, carry~2) -> mtrA(conn, carry~10), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA10 disconnects from NapC2' mtrA(conn!1,carry~10), NapC(dom!1, carry~2) -> mtrA(conn, carry~10), NapC(dom, carry~2) @ 'NapC_mtrA_off'
+
+'mtrA0 disconnects from NapC4' mtrA(conn!1,carry~0), NapC(dom!1, carry~4) -> mtrA(conn, carry~4), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA1 disconnects from NapC4' mtrA(conn!1,carry~1), NapC(dom!1, carry~4) -> mtrA(conn, carry~5), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA2 disconnects from NapC4' mtrA(conn!1,carry~2), NapC(dom!1, carry~4) -> mtrA(conn, carry~6), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA3 disconnects from NapC4' mtrA(conn!1,carry~3), NapC(dom!1, carry~4) -> mtrA(conn, carry~7), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA4 disconnects from NapC4' mtrA(conn!1,carry~4), NapC(dom!1, carry~4) -> mtrA(conn, carry~8), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA5 disconnects from NapC4' mtrA(conn!1,carry~5), NapC(dom!1, carry~4) -> mtrA(conn, carry~9), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA6 disconnects from NapC4' mtrA(conn!1,carry~6), NapC(dom!1, carry~4) -> mtrA(conn, carry~10), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA7 disconnects from NapC4' mtrA(conn!1,carry~7), NapC(dom!1, carry~4) -> mtrA(conn, carry~10), NapC(dom, carry~0) @ 'NapC_mtrA_off'
+'mtrA8 disconnects from NapC4' mtrA(conn!1,carry~8), NapC(dom!1, carry~4) -> mtrA(conn, carry~10), NapC(dom, carry~2) @ 'NapC_mtrA_off'
+'mtrA9 disconnects from NapC4' mtrA(conn!1,carry~9), NapC(dom!1, carry~4) -> mtrA(conn, carry~10), NapC(dom, carry~2) @ 'NapC_mtrA_off'
+'mtrA10 disconnects from NapC4' mtrA(conn!1,carry~10), NapC(dom!1, carry~4) -> mtrA(conn, carry~10), NapC(dom, carry~4) @ 'NapC_mtrA_off'
 
 'mtrA connects to mtrB' mtrA(conn), mtrBC(domB, carry~0) -> mtrA(conn!1), mtrBC(domB!1, carry~0) @ 'mtrA_mtrB_on'
 'mtrA0 disconnects from mtrB' mtrA(conn!1,carry~0), mtrBC(domB!1, carry~0) -> mtrA(conn, carry~0), mtrBC(domB, carry~0) @ 'mtrA_mtrB_off'
@@ -102,7 +139,7 @@
 'Flavin2 disconnects from InsolubleIron' Flavin(conn!1, carry~2), InsolubleIron(dom2!1) -> Flavin(conn, carry~0), InsolubleIron(dom2), InsolubleIronFlavinCounter(), InsolubleIronFlavinCounter() @ 'Flavin_InsolubleIron_off'
 
 %init: 75 mtrBC(domB, domC1, domC2, domC3, carry~10)
-%init: 'no_NapC' NapC(dom)
+%init: 'no_NapC' NapC(dom, carry~4)
 %init: 'no_MtrA' mtrA(conn, carry~0)
 %init: 1 IronPlaceholder()
 

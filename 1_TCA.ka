@@ -14,7 +14,7 @@
 %agent: ComplexII(FAD~0~H)
 
 # Variables #
-%var: 'glucose num'	0.5 #mM
+%var: 'glucose num'	0.1 #mM
 %var: 'Acyl-CoA'	0.14 #mM; default value
 %var: 'TCAs'		('Acyl-CoA'/2)*1000 #muM
 %var: 'old TCA count'	(0.14/2)*1000 #default value
