@@ -1,9 +1,0 @@
-model4_mtrCAB shows the behaviour in Ecoli with a mtrCAB complex. The difference between soluble and insoluble electron acceptors is about 7x, as expected
-
-model4_mtrA shows the behaviour in Ecoli with a mtrA complex. The difference between this soluble rate and 4_mtrCAB_1 is ~1.5, same as in Jensen paper
-
-model5_microIron shows the ammount of electrons transferred from mtrC when the insoluble iron has diameter 5 micrometers
-
-model5_nanoIron show the result for insoluble iron of 13 nanometers, difference from above is ~2.5x, as observed by Jensen
-
-model5_0.2Flavin is the ecoli model with 0.2 micromoles of Flavin added, this increases electron transfer rate ~10x which is what we should expect from Shewanella. This acts as a verification that model5 makes sense.

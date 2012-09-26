@@ -11,7 +11,7 @@
 # Variables: #
 %var: 'Quinol in NapC'				1E-10
 %var: 'NapC with 0 e absorbs Quinol'		(0.221/0.32)*(1E-5)	#-207 mV and -235 mV: avg~221mV
-%var: 'NapC with 2 e absorbs Quinol'		(0.12/0.32)*(1E-5)	#-56 mV, -181 mV: avg~120mV
+%var: 'NapC with 2 e absorbs Quinol'		(0.1185/0.32)*(1E-5)	#-56 mV, -181 mV: avg~120mV
 
 # Initial Population #
 #%init: Quinol <- 0.05	#muM
