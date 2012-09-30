@@ -22,7 +22,7 @@ We model the electron transfer system in *E.coli* by using the stochastic, agent
 5.ka
 // Combines 3. and 4.
 
-The file "Electron Transfer - Process Description.pdf" contains a detailed description of the used information and assutions in the modelling.
+The file "Electron Transfer - Process Description.pdf" contains a detailed description of the used information and assumptions in the modelling.
 
 - - -
 (*) More about Kappa and rule-based modelling can be found at http://kappalanguage.org/.
